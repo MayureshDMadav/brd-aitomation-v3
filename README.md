@@ -35,3 +35,22 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 # brd-aitomation-v3
+
+
+
+## Tools Used
+# UI Library Modules Reference
+- Clerk - Singed UP and install dependencies using clerk for Next JS : https://clerk.com/docs
+- shadcn UI : https://ui.shadcn.com/docs and https://ui.shadcn.com/docs/dark-mode/next
+    ```
+    npx shadcn-ui@latest init
+    npx shadcn-ui@latest add
+    ```
+- Next Themes - npm install next-themes
+- Prisma - To Connect DataBase using Vercel Currently used database is postgresql - Associated file schema.prisma
+    ```  
+    npm install prisma 
+    npx prisma format
+    npx prisma migrate dev 
+    ```
+- 
