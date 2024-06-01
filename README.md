@@ -53,4 +53,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
     npx prisma format
     npx prisma migrate dev 
     ```
-- 
+- https://heropatterns.com/ - HeroPatter To Design Body for Form Builder
+- DND kit to provide Drag and Drop functionality - https://dndkit.com/

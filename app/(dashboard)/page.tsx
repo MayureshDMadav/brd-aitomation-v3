@@ -71,7 +71,6 @@ const FormCard = ({ form }: { form: Form }) => {
 
 const FormCards = async () => {
   const forms = await GetForms();
-  console.log(forms);
   return (
     <>
       {forms.map((form) => (
