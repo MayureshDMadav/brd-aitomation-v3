@@ -33,11 +33,12 @@ const DragOverlayWrapper = () => {
   const isDesignerElement = draggedItem.data?.current?.isDesignerElement;
   if(isDesignerElement){
     const elementId = draggedItem.data?.current?.elementId;
+    console.log(elementId)
     const element = elements.find(el => el.id === elementId);
     if(!element)node = <div>Element Not Found !</div>
     else{
       const  DesingerElementComponent = FormElements[element.type].desginerComponent;
-      node = <div className="flex bg-accent border rounded-md h-[120px] w-full py-2 px-4 opacity-80"><DesingerElementComponent elementInstance={element} /></div>
+      node = <div className="flex bg-accent border rounded-md h-[120px] w-full py-2 px-4 opacity-80 pointer pointer-events-none"><DesingerElementComponent elementInstance={element} /></div>
     }
   }
 

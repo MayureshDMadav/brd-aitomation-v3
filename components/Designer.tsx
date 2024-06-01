@@ -1,7 +1,12 @@
 "use client";
 import React, { useState } from "react";
 import DesignerSideBar from "./DesignerSideBar";
-import { DragEndEvent, useDndMonitor, useDraggable, useDroppable } from "@dnd-kit/core";
+import {
+  DragEndEvent,
+  useDndMonitor,
+  useDraggable,
+  useDroppable,
+} from "@dnd-kit/core";
 import { cn } from "@/lib/utils";
 import useDesigner from "./hooks/useDesigner";
 import {
@@ -19,7 +24,9 @@ const DesignerElementWrapper = ({
   element: FormElementInstance;
 }) => {
   const [mouseIsOver, setMouseIsOver] = useState<boolean>(false);
-  const { removeElement } = useDesigner();
+  const { removeElement,selectedElement,setSelectedElement } = useDesigner();
+
+  
   const topHalf = useDroppable({
     id: element.id + "-top",
     data: {
@@ -38,19 +45,17 @@ const DesignerElementWrapper = ({
     },
   });
 
-
   const draggable = useDraggable({
-    id:element.id + "-drag-handler",
-    data:{
+    id: element.id + "-drag-handler",
+    data: {
       type: element.type,
       elementId: element.id,
-      isDesignerElement:true
-    }
-  })
+      isDesignerElement: true,
+    },
+  });
 
-
-  if(draggable.isDragging) return null;
-
+  if (draggable.isDragging) return null;
+  console.log(selectedElement)
   // Element Dragging Functionality
   const DesignerElement = FormElements[element.type].desginerComponent;
   return (
@@ -65,14 +70,18 @@ const DesignerElementWrapper = ({
       onMouseLeave={() => {
         setMouseIsOver(false);
       }}
+      onClick={(e)=>{
+        e.stopPropagation()
+        setSelectedElement(element);
+      }}
     >
       <div
         ref={topHalf.setNodeRef}
-        className="absolute  w-full h-1/2 rounded-t-md"
+        className="absolute   w-full h-1/2 rounded-t-md"
       ></div>
       <div
         ref={bottomHalf.setNodeRef}
-        className="absolute w-full h-1/2 rounded-b-md"
+        className="absolute w-full  h-1/2 rounded-b-md"
       ></div>
       {mouseIsOver && (
         <>
@@ -80,7 +89,8 @@ const DesignerElementWrapper = ({
             <Button
               className="flex justify-center h-full border rounded-md rounded-l-none bg-red-500"
               variant={"outline"}
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation()
                 removeElement(element.id);
               }}
             >
@@ -94,28 +104,23 @@ const DesignerElementWrapper = ({
           </div>
         </>
       )}
-      {topHalf.isOver && (
-        <div className="absolute top-0 w-full rounded-md h-[7px] bg-primary rounded-b-none" />
-      )}
-      
-      {bottomHalf.isOver && (
-        <div className="absolute bottom-0 w-full rounded-md h-[7px] bg-primary rounded-t-none" />
-      )}
+      {topHalf.isOver && <div className="absolute top-0 w-full rounded-md h-[7px] bg-primary rounded-b-none" />}
+
       <div
         className={cn(
           "flex w-full h-[120px] items-center rounded-md bg-accent/40 px-4 py-2 pointer-events-none opactiy-100",
-          mouseIsOver && "opacity-30",
-         
+          mouseIsOver && "opacity-30"
         )}
       >
         <DesignerElement elementInstance={element} />
       </div>
+      {bottomHalf.isOver &&  <div className="absolute bottom-0 w-full rounded-md h-[7px] bg-primary rounded-t-none" />}
     </div>
   );
 };
 
 const Designer = () => {
-  const { elements, addElement } = useDesigner();
+  const { elements, addElement ,selectedElement,setSelectedElement} = useDesigner();
   const droppable = useDroppable({
     id: "designer-drop-area",
     data: {
@@ -133,7 +138,6 @@ const Designer = () => {
         const newElement = FormElements[type as ElementsType].construct(
           idGenerator()
         );
-        console.log("new element", newElement);
         addElement(0, newElement);
       }
     },
@@ -142,7 +146,9 @@ const Designer = () => {
   return (
     <div className="flex w-full h-full">
       <DesignerSideBar />
-      <div className="p-4 w-full">
+      <div className="p-4 w-full" onClick={()=>{
+        if(selectedElement) setSelectedElement(null)
+      }}>
         <div
           ref={droppable.setNodeRef}
           className={cn(
@@ -155,7 +161,7 @@ const Designer = () => {
               Drop Here
             </p>
           )}
-          {droppable.isOver && (
+          {droppable.isOver && elements.length === 0 &&(
             <div className="p-4 w-full">
               <div className="h-[120px] rounder-md bg-primary/20"></div>
             </div>
