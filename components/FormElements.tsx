@@ -1,16 +1,25 @@
+import { SubtitleFieldFormElement } from "./fields/Subtitle";
 import { TextFieldFormElement } from "./fields/TextField";
+import { TitleFieldFormElement } from "./fields/TitleField";
 
-export type ElementsType = "TextField";
+export type ElementsType = "TextField" | "TitleField" | "Subtitle";
+
+export type SubmitFunction = (key:string,value:string) => void
 
 export type FormElement = {
     type:ElementsType,
 
     construct : (id:string) => FormElementInstance;
 
-    desginerComponent : React.FC<{
+    designerComponent : React.FC<{
         elementInstance : FormElementInstance
     }>;
-    formComponent : React.FC;
+    formComponent : React.FC<{
+        elementInstance : FormElementInstance;
+        submitValue?:SubmitFunction;
+        isInvalid?: boolean;
+        defaultValues?:string;
+    }>;
     propertiesComponent: React.FC<{
         elementInstance : FormElementInstance
     }>;
@@ -19,6 +28,8 @@ export type FormElement = {
         icon:React.ElementType;
         label:string;
     }
+
+    validate : (formElement:FormElementInstance,currentValue:string)=>boolean;
 }
 
 
@@ -33,5 +44,7 @@ export type FormElementInstance = {
 } 
 
 export const FormElements: FormElementType = {
-    TextField:TextFieldFormElement
+    TextField:TextFieldFormElement,
+    TitleField:TitleFieldFormElement,
+    Subtitle:SubtitleFieldFormElement
 };

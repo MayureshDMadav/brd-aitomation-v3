@@ -30,7 +30,7 @@ export const GetFormStats = async () => {
   }
 
   const bounceRate = 100 - submissionRate;
-
+  console.log(visits, submissions, "Form GetFormStats");
   return {
     visits,
     submissions,
@@ -67,35 +67,127 @@ export async function CreatForm(data: formSchemaType) {
   return form.id;
 }
 
-export const GetForms = async() =>{
-    const user = await currentUser();
-    if (!user) {
-      throw new UserNofFounErr();
-    }
+export const GetForms = async () => {
+  const user = await currentUser();
+  if (!user) {
+    throw new UserNofFounErr();
+  }
 
-    return await prisma.form.findMany({
-        where:{
-            userId:user.id,
-        },
-        orderBy:{
-            createAt:"desc"
-        }
-    })
-}
+  return await prisma.form.findMany({
+    where: {
+      userId: user.id,
+    },
+    orderBy: {
+      createAt: "desc",
+    },
+  });
+};
 
-
-export const GetFormById = async(id: number) =>{
-  try{
+export const GetFormById = async (id: number) => {
+  try {
     const user = await currentUser();
     if (!user) {
       throw new UserNofFounErr();
     }
 
     return await prisma.form.findUnique({
-      where:{
-        userId:user.id,
-        id
+      where: {
+        userId: user.id,
+        id,
+      },
+    });
+  } catch (e) {}
+};
+
+export const UpdateFormContent = async (id: number, jsonContent: string) => {
+  try {
+    const user = await currentUser();
+    if (!user) {
+      throw new UserNofFounErr();
+    }
+
+    return await prisma.form.update({
+      where: {
+        userId: user.id,
+        id,
+      },
+      data: {
+        content: jsonContent,
+      },
+    });
+  } catch (e) {}
+};
+
+export const PublishForm = async (id: number) => {
+  try {
+    const user = await currentUser();
+    if (!user) {
+      throw new UserNofFounErr();
+    }
+
+    return await prisma.form.update({
+      data: {
+        published: true,
+      },
+      where: {
+        userId: user.id,
+        id,
+      },
+    });
+  } catch (e) {}
+};
+
+export const GetFormContentByUrl = async (formUrl: string) => {
+  return await prisma.form.update({
+    select: {
+      content: true,
+    },
+    data: {
+      visits: {
+        increment: 1,
+      },
+    },
+    where: {
+      shareURL:formUrl
+    },
+  });
+};
+
+export const SubmitForm = async(formUrl: string,content:string) =>{
+  return await prisma.form.update({
+    data:{
+      submissions:{
+        increment:1
+      },
+      FormSubmissions:{
+        create:{
+          content
+        }
       }
-    })
-  }catch(e){}
+    },
+    where: {
+      shareURL:formUrl,
+      published:true
+    },
+  })
+}
+
+
+export const GetFormWithSubmissions = async(id:number) =>{
+  try {
+    const user = await currentUser();
+    if (!user) {
+      throw new UserNofFounErr();
+    }
+
+    return await prisma.form.findUnique({
+      where: {
+        id,
+      },
+      include:{
+        FormSubmissions:true
+      }
+    });
+  } catch (e) {}
+
 }

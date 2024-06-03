@@ -55,3 +55,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
     ```
 - https://heropatterns.com/ - HeroPatter To Design Body for Form Builder
 - DND kit to provide Drag and Drop functionality - https://dndkit.com/
+
+- Publish Page - npm install react-confetti

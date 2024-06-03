@@ -81,7 +81,7 @@ const FormCards = async () => {
 };
 
 
-const StatsCard = ({
+export const StatsCard = ({
   title,
   value,
   icon,
@@ -106,7 +106,7 @@ const StatsCard = ({
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold">
-          {!loading && (
+          {loading && (
             <Skeleton>
               <span className="opacity-0">0</span>
             </Skeleton>
