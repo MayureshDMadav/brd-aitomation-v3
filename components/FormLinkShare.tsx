@@ -27,9 +27,9 @@ const FormLinkShare = ({ shareUrl }: { shareUrl: string }) => {
         onClick={() => {
           navigator.clipboard.writeText(shareLink);
           toast({
-            title:"Copied!",
-            description:"Link Copied to Clipboard"
-          })
+            title: "Copied!",
+            description: "Link Copied to Clipboard",
+          });
         }}
       >
         <ImShare className="m-2 h-4 w-4" />

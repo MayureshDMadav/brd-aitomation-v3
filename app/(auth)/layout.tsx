@@ -17,7 +17,9 @@ const Layout = ({ children }: { children: ReactNode }) => {
         </div>
       </nav>
       {/* Body Section */}
-      <main className="flex w-full flex-grow h-full items-center justify-center">{children}</main>
+      <main className="flex w-full flex-grow h-full items-center justify-center">
+        {children}
+      </main>
     </div>
   );
 };

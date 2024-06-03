@@ -1,62 +1,72 @@
-"use client"
+"use client";
 
-import { Form } from '@prisma/client'
-import React, { useEffect, useState } from 'react'
-import PreviewDialogBtn from './PreviewDialogBtn'
-import SaveFormBtn from './SaveFormBtn'
-import PublishFormBtn from './PublishFormBtn'
-import Designer from './Designer'
-import { DndContext, MouseSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core'
-import DragOverlayWrapper from './DragOverlayWrapper'
-import useDesigner from './hooks/useDesigner'
-import Loading from '@/app/(dashboard)/builder/[id]/loading'
+import { Form } from "@prisma/client";
+import React, { useEffect, useState } from "react";
+import PreviewDialogBtn from "./PreviewDialogBtn";
+import SaveFormBtn from "./SaveFormBtn";
+import PublishFormBtn from "./PublishFormBtn";
+import Designer from "./Designer";
+import {
+  DndContext,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import DragOverlayWrapper from "./DragOverlayWrapper";
+import useDesigner from "./hooks/useDesigner";
+import Loading from "@/app/(dashboard)/builder/[id]/loading";
 import Confetti from "react-confetti";
-import { Input } from './ui/input'
-import { Button } from './ui/button'
-import { toast } from './ui/use-toast'
-import Link from 'next/link'
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { toast } from "./ui/use-toast";
+import Link from "next/link";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 
 // Responsible for Builder and publishing Form Pages
-const FormBuilder = ({form}:{form:Form}) => {
-  const {setElements ,setSelectedElement} = useDesigner();
-  const [isReady,setIsReady] = useState(false);
+const FormBuilder = ({ form }: { form: Form }) => {
+  const { setElements, setSelectedElement } = useDesigner();
+  const [isReady, setIsReady] = useState(false);
 
-  const mouseSensor = useSensor(MouseSensor,{
-    activationConstraint:{
-      distance:10,
-    }
-  })
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      distance: 10,
+    },
+  });
 
-  const touchSensor = useSensor(TouchSensor,{
-    activationConstraint:{
-      delay:300,
-      tolerance:5
-    }
-  })
+  const touchSensor = useSensor(TouchSensor, {
+    activationConstraint: {
+      delay: 300,
+      tolerance: 5,
+    },
+  });
 
-  const sensors = useSensors(mouseSensor,touchSensor)
+  const sensors = useSensors(mouseSensor, touchSensor);
 
-
-  useEffect(()=>{
-    if(isReady) return;
+  useEffect(() => {
+    if (isReady) return;
     const elements = JSON.parse(form.content);
-    setElements(elements)
-    setSelectedElement(null)
-    const readyTimeout = setTimeout(()=>setIsReady(true),500)
-    return () => clearTimeout(readyTimeout)
-  },[form,setElements,isReady,setSelectedElement])
+    setElements(elements);
+    setSelectedElement(null);
+    const readyTimeout = setTimeout(() => setIsReady(true), 500);
+    return () => clearTimeout(readyTimeout);
+  }, [form, setElements, isReady, setSelectedElement]);
 
-  if(!isReady){
-    return <Loading/>
+  if (!isReady) {
+    return <Loading />;
   }
 
-  const shareUrl = `${window.location.origin}/submit/${form.shareURL}`
+  const shareUrl = `${window.location.origin}/submit/${form.shareURL}`;
 
   if (form.published) {
     return (
       <>
-        <Confetti width={window.innerWidth} height={window.innerHeight} recycle={false} numberOfPieces={1000} />
+        <Confetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          recycle={false}
+          numberOfPieces={1000}
+        />
         <div className="flex flex-col items-center justify-center h-full w-full">
           <div className="max-w-md">
             <h1 className="text-center text-4xl font-bold text-primary border-b pb-2 mb-10">
@@ -103,30 +113,29 @@ const FormBuilder = ({form}:{form:Form}) => {
 
   return (
     <DndContext sensors={sensors}>
-    <main className='flex flex-col w-full'>
-      <nav className='flex justify-between border-b-2 p-4 gap-3 items-center'>
-        <h2 className='truncate font-medium'>
-          <span className='text-muted-foreground mr-2'>Form:</span>
-          {form.name}
-        </h2>
-        <div className='flex items-center gap-2'>
-          <PreviewDialogBtn />
-           {!form.published && (
-            <>
-            <SaveFormBtn id={form.id}/>
-            <PublishFormBtn  id={form.id}/>
-            </>
-           )}
+      <main className="flex flex-col w-full">
+        <nav className="flex justify-between border-b-2 p-4 gap-3 items-center">
+          <h2 className="truncate font-medium">
+            <span className="text-muted-foreground mr-2">Form:</span>
+            {form.name}
+          </h2>
+          <div className="flex items-center gap-2">
+            <PreviewDialogBtn />
+            {!form.published && (
+              <>
+                <SaveFormBtn id={form.id} />
+                <PublishFormBtn id={form.id} />
+              </>
+            )}
+          </div>
+        </nav>
+        <div className="flex w-full flex-grow items-center justify-center relative overflow-y-auto h-[200px] bg-accent bg-[url(/paper.svg)] dark:bg-[url(/paper-dark.svg)]">
+          <Designer />
         </div>
-      </nav>
-      <div className='flex w-full flex-grow items-center justify-center relative overflow-y-auto h-[200px] bg-accent bg-[url(/paper.svg)] dark:bg-[url(/paper-dark.svg)]'>
-        <Designer />
-      </div>
-    </main>
-    <DragOverlayWrapper/>
+      </main>
+      <DragOverlayWrapper />
     </DndContext>
-  )
+  );
+};
 
-}
-
-export default FormBuilder
+export default FormBuilder;

@@ -20,8 +20,8 @@ import { Badge } from "@/components/ui/badge";
 import { formatDistance } from "date-fns";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import {BiRightArrowAlt} from 'react-icons/bi';
-import {FaEdit} from 'react-icons/fa';
+import { BiRightArrowAlt } from "react-icons/bi";
+import { FaEdit } from "react-icons/fa";
 
 const FormCardSkeleton = () => {
   return <Skeleton className="border-2 border-primary-/20 h-[190px] w-full" />;
@@ -56,12 +56,16 @@ const FormCard = ({ form }: { form: Form }) => {
       <CardFooter>
         {form.published && (
           <Button asChild className="w-full mt-2 text-md gap-4">
-            <Link href={`/forms/${form.id}`}>View Submission <BiRightArrowAlt/></Link>
+            <Link href={`/forms/${form.id}`}>
+              View Submission <BiRightArrowAlt />
+            </Link>
           </Button>
         )}
-          {!form.published && (
+        {!form.published && (
           <Button asChild className="w-full mt-2 text-md gap-4">
-            <Link href={`/builder/${form.id}`}>Edit Form <FaEdit/></Link>
+            <Link href={`/builder/${form.id}`}>
+              Edit Form <FaEdit />
+            </Link>
           </Button>
         )}
       </CardFooter>
@@ -79,7 +83,6 @@ const FormCards = async () => {
     </>
   );
 };
-
 
 export const StatsCard = ({
   title,
@@ -172,7 +175,7 @@ export default function Home() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <CreateFormBtn />
         <Suspense
-          fallback={[1,2,3].map((el) => (
+          fallback={[1, 2, 3].map((el) => (
             <FormCardSkeleton key={el} />
           ))}
         >

@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import React from 'react'
-import { FormElements } from './FormElements'
-import SidebarBtnElement from './SidebarBtnElement'
-import useDesigner from './hooks/useDesigner'
-import FormElementSidebar from './FormElementSidebar'
-import PropertiesFormSidebar from './PropertiesFormSidebar'
+import React from "react";
+import { FormElements } from "./FormElements";
+import SidebarBtnElement from "./SidebarBtnElement";
+import useDesigner from "./hooks/useDesigner";
+import FormElementSidebar from "./FormElementSidebar";
+import PropertiesFormSidebar from "./PropertiesFormSidebar";
 
 const DesignerSideBar = () => {
-  const {selectedElement} = useDesigner();
+  const { selectedElement } = useDesigner();
   return (
     <aside className="w-[400px] max-w-[400px] flex flex-col  flex-grow gap-2 border-l-2 border-muted p-4 bg-background overflow-y-auto h-full">
-      {!selectedElement && <FormElementSidebar/>}
+      {!selectedElement && <FormElementSidebar />}
       {selectedElement && <PropertiesFormSidebar />}
     </aside>
-  )
-}
+  );
+};
 
-export default DesignerSideBar
+export default DesignerSideBar;

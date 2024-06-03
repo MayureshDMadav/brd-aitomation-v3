@@ -1,21 +1,21 @@
-"use client"
+"use client";
 
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-import React, { useEffect } from 'react'
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import React, { useEffect } from "react";
 
-const ErrorPage = ({error}:{error:Error}) => {
-  useEffect(()=>{
-    console.log(error)
-  },[error])
+const ErrorPage = ({ error }: { error: Error }) => {
+  useEffect(() => {
+    console.log(error);
+  }, [error]);
   return (
-    <div className='flex w-full h-full flex-col items-center justify-center'>
-        <h2 className='text-destructive text-4xl'>Something went Wrong!</h2>
-        <Button asChild>
-            <Link href={"/"}>Go Back To Home Page</Link>
-        </Button>
+    <div className="flex w-full h-full flex-col items-center justify-center">
+      <h2 className="text-destructive text-4xl">Something went Wrong!</h2>
+      <Button asChild>
+        <Link href={"/"}>Go Back To Home Page</Link>
+      </Button>
     </div>
-  )
-}
+  );
+};
 
-export default ErrorPage
+export default ErrorPage;

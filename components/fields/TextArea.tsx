@@ -39,7 +39,6 @@ const extraAttributes = {
   rows: 3,
 };
 
-
 const propertiesSchema = z.object({
   label: z.string().min(2).max(50),
   helperText: z.string().max(200),
@@ -47,7 +46,6 @@ const propertiesSchema = z.object({
   placeHolder: z.string().max(50),
   rows: z.number().min(1).max(10),
 });
-
 
 type CustomInstance = FormElementInstance & {
   extraAttributes: typeof extraAttributes;
@@ -67,7 +65,7 @@ const DesignerComponent = ({
         {label}
         {required && "*"}
       </Label>
-      <Textarea readOnly disabled placeholder={placeHolder}  />
+      <Textarea readOnly disabled placeholder={placeHolder} />
       {helperText && (
         <p className="text-muted-foreground text-[0.8rem]">{helperText}</p>
       )}
@@ -91,7 +89,8 @@ const FormComponent = ({
   const element = elementInstance as CustomInstance;
   const [value, setValue] = useState(defaultValues || "");
   const [err, setErr] = useState(false);
-  const { label, required, placeHolder, helperText, rows } = element.extraAttributes;
+  const { label, required, placeHolder, helperText, rows } =
+    element.extraAttributes;
 
   useEffect(() => {
     setErr(isInvalid === true);
@@ -149,7 +148,7 @@ const PropertiesComponent = ({
       helperText: element.extraAttributes.helperText,
       required: element.extraAttributes.required,
       placeHolder: element.extraAttributes.placeHolder,
-      rows: element.extraAttributes.rows
+      rows: element.extraAttributes.rows,
     },
   });
 
@@ -159,7 +158,7 @@ const PropertiesComponent = ({
 
   // To Handle Properties Section
   function applyChanges(values: propertiesSchemaType) {
-    const { label, helperText, required, placeHolder ,rows} = values;
+    const { label, helperText, required, placeHolder, rows } = values;
     updateElement(element.id, {
       ...element,
       extraAttributes: {
@@ -241,28 +240,28 @@ const PropertiesComponent = ({
             </FormItem>
           )}
         />
-         <FormField
+        <FormField
           control={form.control}
           name="rows"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Rows {form.watch("rows")}</FormLabel>
               <FormControl>
-              <Slider 
-              min={1}
-              max={10}
-              step={1}
-              defaultValue={[field.value]}
-              onValueChange={value =>{
-                field.onChange(value[0])
-              }}
-              />
+                <Slider
+                  min={1}
+                  max={10}
+                  step={1}
+                  defaultValue={[field.value]}
+                  onValueChange={(value) => {
+                    field.onChange(value[0]);
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        
+
         <FormField
           control={form.control}
           name="required"

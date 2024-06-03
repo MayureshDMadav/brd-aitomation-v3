@@ -1,20 +1,19 @@
-import { GetFormContentByUrl } from '@/actions/form';
-import { FormElementInstance } from '@/components/FormElements';
-import FormSubmitComponent from '@/components/FormSubmitComponent';
+import { GetFormContentByUrl } from "@/actions/form";
+import { FormElementInstance } from "@/components/FormElements";
+import FormSubmitComponent from "@/components/FormSubmitComponent";
 
-import React from 'react'
+import React from "react";
 
-const SubmitPage = async({params}:{params:{formUrl:string}}) => {
-    const form = await GetFormContentByUrl(params.formUrl);
+const SubmitPage = async ({ params }: { params: { formUrl: string } }) => {
+  const form = await GetFormContentByUrl(params.formUrl);
 
-    if(!form){
-      throw new Error("Form Not Found")
-    }
+  if (!form) {
+    throw new Error("Form Not Found");
+  }
 
-    const formContent = JSON.parse(form.content) as FormElementInstance[];
+  const formContent = JSON.parse(form.content) as FormElementInstance[];
 
-  return <FormSubmitComponent formUrl = {params.formUrl} content={formContent}/>
-  
-}
+  return <FormSubmitComponent formUrl={params.formUrl} content={formContent} />;
+};
 
-export default SubmitPage
+export default SubmitPage;

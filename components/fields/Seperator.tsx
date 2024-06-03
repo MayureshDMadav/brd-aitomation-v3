@@ -27,11 +27,9 @@ import { Switch } from "../ui/switch";
 import { cn } from "@/lib/utils";
 import { LuHeading1 } from "react-icons/lu";
 import { Separator } from "../ui/separator";
-import {RiSeparator} from 'react-icons/ri'
+import { RiSeparator } from "react-icons/ri";
 
 const type: ElementsType = "Seprator";
-
-
 
 const DesignerComponent = ({
   elementInstance,
@@ -41,7 +39,7 @@ const DesignerComponent = ({
   return (
     <div className="flex flex-col gap-2 w-full">
       <Label className="text-muted-foreground">Seperator Field</Label>
-      <Separator/>
+      <Separator />
     </div>
   );
 };
@@ -53,7 +51,7 @@ const FormComponent = ({
 }: {
   elementInstance: FormElementInstance;
 }) => {
-  return <Separator/>;
+  return <Separator />;
 };
 
 const PropertiesComponent = ({

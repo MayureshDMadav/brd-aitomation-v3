@@ -1,6 +1,6 @@
 "use client";
 import { DesktopIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
-import { Tabs, TabsList, TabsTrigger} from "./ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 
 import { useTheme } from "next-themes";
 import React, { useEffect, useState } from "react";
@@ -15,7 +15,7 @@ const ThemeSwitcher = () => {
     setMounted(true);
   }, []);
 
-// To Avoid rehydration Error
+  // To Avoid rehydration Error
   if (!mounted) return null;
   return (
     <Tabs defaultValue={theme}>

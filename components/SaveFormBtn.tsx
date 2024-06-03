@@ -6,7 +6,7 @@ import { toast } from "./ui/use-toast";
 import { UpdateFormContent } from "@/actions/form";
 import { FaSpinner } from "react-icons/fa";
 
-const SaveFormBtn = ({id}:{id:number}) => {
+const SaveFormBtn = ({ id }: { id: number }) => {
   const { elements } = useDesigner();
   const [loading, startTransition] = useTransition();
   const updateFormContent = async () => {

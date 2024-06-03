@@ -73,23 +73,22 @@ const FormComponent = ({
   elementInstance,
   submitValue,
   isInvalid,
-  defaultValues
+  defaultValues,
 }: {
   elementInstance: FormElementInstance;
   submitValue?: SubmitFunction;
-  isInvalid?:boolean;
-  defaultValues?:string
+  isInvalid?: boolean;
+  defaultValues?: string;
 }) => {
   const element = elementInstance as CustomInstance;
   const [value, setValue] = useState(defaultValues || "");
-  const [err,setErr] = useState(false);
+  const [err, setErr] = useState(false);
   const { label, required, placeHolder, helperText } = element.extraAttributes;
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     setErr(isInvalid === true);
-  },[isInvalid])
-  
-  
+  }, [isInvalid]);
+
   return (
     <div className="flex flex-col gap-2 w-full">
       <Label className={cn(err && "text-red-500")}>
@@ -97,20 +96,27 @@ const FormComponent = ({
         {required && "*"}
       </Label>
       <Input
-      className={cn(err && "border-red-500")}
+        className={cn(err && "border-red-500")}
         placeholder={placeHolder}
         onChange={(e) => setValue(e.target.value)}
-        onBlur={(e)=>{
-          if(!submitValue)return;
-          const valid = TextFieldFormElement.validate(element,e.target.value);
+        onBlur={(e) => {
+          if (!submitValue) return;
+          const valid = TextFieldFormElement.validate(element, e.target.value);
           setErr(!valid);
-          if(!valid) return
-          submitValue(element.id,e.target.value)
+          if (!valid) return;
+          submitValue(element.id, e.target.value);
         }}
         value={value}
       />
       {helperText && (
-        <p className={cn("text-muted-foreground text-[0.8rem]",err && "text-red-500")}>{helperText}</p>
+        <p
+          className={cn(
+            "text-muted-foreground text-[0.8rem]",
+            err && "text-red-500"
+          )}
+        >
+          {helperText}
+        </p>
       )}
     </div>
   );
@@ -260,9 +266,12 @@ export const TextFieldFormElement: FormElement = {
   formComponent: FormComponent,
   propertiesComponent: PropertiesComponent,
 
-  validate:(formElement:FormElementInstance,currentValue:string):boolean =>{
+  validate: (
+    formElement: FormElementInstance,
+    currentValue: string
+  ): boolean => {
     const element = formElement as CustomInstance;
-    if(element.extraAttributes.required) return currentValue.length > 0
+    if (element.extraAttributes.required) return currentValue.length > 0;
     return true;
-  }
+  },
 };

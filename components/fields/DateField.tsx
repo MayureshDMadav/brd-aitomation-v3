@@ -119,23 +119,23 @@ const FormComponent = ({
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
-            {date ? format(date, "PPP") :<span>Pick a Date</span>}
+            {date ? format(date, "PPP") : <span>Pick a Date</span>}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
-            <Calendar
+          <Calendar
             mode="single"
-            selected= {date}
-            onSelect={(date)=>{
+            selected={date}
+            onSelect={(date) => {
               setDate(date);
-              if(!submitValue)return;
-              const value = date?.toUTCString() || ""
-              const valid = DateFieldFormElement.validate(element,value)
-              setErr(!valid)
-              submitValue(element.id,value)
+              if (!submitValue) return;
+              const value = date?.toUTCString() || "";
+              const valid = DateFieldFormElement.validate(element, value);
+              setErr(!valid);
+              submitValue(element.id, value);
             }}
             initialFocus
-            />
+          />
         </PopoverContent>
       </Popover>
       {helperText && (

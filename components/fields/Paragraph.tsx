@@ -32,7 +32,7 @@ import { Textarea } from "../ui/textarea";
 const type: ElementsType = "Paragraph";
 
 const propertiesSchema = z.object({
-   text: z.string().min(2).max(500),
+  text: z.string().min(2).max(500),
 });
 
 const extraAttributes = {
@@ -81,7 +81,7 @@ const PropertiesComponent = ({
     resolver: zodResolver(propertiesSchema),
     mode: "onBlur",
     defaultValues: {
-        text: element.extraAttributes.text,
+      text: element.extraAttributes.text,
     },
   });
 
@@ -111,7 +111,7 @@ const PropertiesComponent = ({
               <FormLabel>Text</FormLabel>
               <FormControl>
                 <Textarea
-                rows={5}
+                  rows={5}
                   {...field}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") e.currentTarget.blur();

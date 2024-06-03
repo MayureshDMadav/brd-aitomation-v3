@@ -25,8 +25,14 @@ import {
 } from "../ui/form";
 import { Switch } from "../ui/switch";
 import { cn } from "@/lib/utils";
-import {RxDropdownMenu} from 'react-icons/rx'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { RxDropdownMenu } from "react-icons/rx";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
 import { AiOutlineClose, AiOutlinePlus } from "react-icons/ai";
@@ -67,11 +73,11 @@ const DesignerComponent = ({
         {label}
         {required && "*"}
       </Label>
-     <Select>
-      <SelectTrigger className="w-full">
-        <SelectValue placeholder={placeHolder}/>
-      </SelectTrigger>
-     </Select>
+      <Select>
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder={placeHolder} />
+        </SelectTrigger>
+      </Select>
       {helperText && (
         <p className="text-muted-foreground text-[0.8rem]">{helperText}</p>
       )}
@@ -95,7 +101,8 @@ const FormComponent = ({
   const element = elementInstance as CustomInstance;
   const [value, setValue] = useState(defaultValues || "");
   const [err, setErr] = useState(false);
-  const { label, required, placeHolder, helperText ,options} = element.extraAttributes;
+  const { label, required, placeHolder, helperText, options } =
+    element.extraAttributes;
 
   useEffect(() => {
     setErr(isInvalid === true);
@@ -107,22 +114,27 @@ const FormComponent = ({
         {label}
         {required && "*"}
       </Label>
-      <Select defaultValue={value} onValueChange={value =>{
-        setValue(value);
-        if(!submitValue) return;
-        const valid = SelectFieldFormElement.validate(element,value);
-        setErr(!valid)
-        submitValue(element.id,value)
-      }}>
-      <SelectTrigger className={cn("w-full",err && "border-red-500")}>
-        <SelectValue placeholder={placeHolder}/>
-      </SelectTrigger>
-      <SelectContent>
-        {options.map(option => (
-          <SelectItem key={option} value={option}>{option}</SelectItem>
-        ))}
-      </SelectContent>
-     </Select>
+      <Select
+        defaultValue={value}
+        onValueChange={(value) => {
+          setValue(value);
+          if (!submitValue) return;
+          const valid = SelectFieldFormElement.validate(element, value);
+          setErr(!valid);
+          submitValue(element.id, value);
+        }}
+      >
+        <SelectTrigger className={cn("w-full", err && "border-red-500")}>
+          <SelectValue placeholder={placeHolder} />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map((option) => (
+            <SelectItem key={option} value={option}>
+              {option}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
       {helperText && (
         <p
           className={cn(
@@ -143,7 +155,7 @@ const PropertiesComponent = ({
   elementInstance: FormElementInstance;
 }) => {
   const element = elementInstance as CustomInstance;
-  const { updateElement ,setSelectedElement} = useDesigner();
+  const { updateElement, setSelectedElement } = useDesigner();
   const form = useForm<propertiesSchemaType>({
     resolver: zodResolver(propertiesSchema),
     mode: "onSubmit",
@@ -152,7 +164,7 @@ const PropertiesComponent = ({
       helperText: element.extraAttributes.helperText,
       required: element.extraAttributes.required,
       placeHolder: element.extraAttributes.placeHolder,
-      options:element.extraAttributes.options
+      options: element.extraAttributes.options,
     },
   });
 
@@ -162,7 +174,7 @@ const PropertiesComponent = ({
 
   // To Handle Properties Section
   function applyChanges(values: propertiesSchemaType) {
-    const { label, helperText, required, placeHolder ,options } = values;
+    const { label, helperText, required, placeHolder, options } = values;
     updateElement(element.id, {
       ...element,
       extraAttributes: {
@@ -170,16 +182,16 @@ const PropertiesComponent = ({
         helperText,
         required,
         placeHolder,
-        options
+        options,
       },
     });
 
     toast({
-      title:"Succeess",
-      description:"Properties saved successfully",
-    })
+      title: "Succeess",
+      description: "Properties saved successfully",
+    });
 
-    setSelectedElement(null)
+    setSelectedElement(null);
   }
 
   return (
@@ -251,44 +263,55 @@ const PropertiesComponent = ({
             </FormItem>
           )}
         />
-        <Separator/>
+        <Separator />
         <FormField
           control={form.control}
           name="options"
           render={({ field }) => (
             <FormItem>
               <div className="flex justify-between items-center">
-              <FormLabel>Options</FormLabel>
-              <Button variant={"outline"} className="gap-2" onClick={e =>{
-                e.preventDefault();
-                form.setValue("options",field.value.concat("New Option"));
-              }}>
-                <AiOutlinePlus/>
-                Add
-              </Button>
-              </div>    
-              <div className="flex flex-col gap-2">
-               {form.watch("options").map((option, index)=>(
-                <div key={index} className="flex items-center justify-between gap-1">
-                  <Input placeholder="" value={option} onChange={(e) =>{
-                    field.value[index] = e.target.value;
-                    field.onChange(field.value)
-                  }}/>
-                  <Button
-                  variant={"ghost"}
-                  size={"icon"}
-                  onClick={(e)=>{
+                <FormLabel>Options</FormLabel>
+                <Button
+                  variant={"outline"}
+                  className="gap-2"
+                  onClick={(e) => {
                     e.preventDefault();
-                    const newOptions = [...field.value];
-                    newOptions.splice(index,1);
-                    field.onChange(newOptions);
+                    form.setValue("options", field.value.concat("New Option"));
                   }}
+                >
+                  <AiOutlinePlus />
+                  Add
+                </Button>
+              </div>
+              <div className="flex flex-col gap-2">
+                {form.watch("options").map((option, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between gap-1"
                   >
-                    <AiOutlineClose/>
-                  </Button>
-                </div>
-               ))}
-              </div>         
+                    <Input
+                      placeholder=""
+                      value={option}
+                      onChange={(e) => {
+                        field.value[index] = e.target.value;
+                        field.onChange(field.value);
+                      }}
+                    />
+                    <Button
+                      variant={"ghost"}
+                      size={"icon"}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const newOptions = [...field.value];
+                        newOptions.splice(index, 1);
+                        field.onChange(newOptions);
+                      }}
+                    >
+                      <AiOutlineClose />
+                    </Button>
+                  </div>
+                ))}
+              </div>
               <FormDescription>
                 The HelperText of the field. <br /> It will be displayed above
                 the field
@@ -297,7 +320,7 @@ const PropertiesComponent = ({
             </FormItem>
           )}
         />
-        <Separator/>
+        <Separator />
         <FormField
           control={form.control}
           name="required"
@@ -317,7 +340,7 @@ const PropertiesComponent = ({
             </FormItem>
           )}
         />
-        <Separator/>
+        <Separator />
         <Button className="w-full">Save</Button>
       </form>
     </Form>

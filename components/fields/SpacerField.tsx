@@ -35,7 +35,7 @@ const propertiesSchema = z.object({
 });
 
 const extraAttributes = {
-  height:20 //px
+  height: 20, //px
 };
 
 type CustomInstance = FormElementInstance & {
@@ -52,7 +52,7 @@ const DesignerComponent = ({
   return (
     <div className="flex flex-col gap-2 w-full items-center">
       <Label className="text-muted-foreground">Spacer Field {height}px</Label>
-      <LuSeparatorHorizontal className="h-8 w-8"/>
+      <LuSeparatorHorizontal className="h-8 w-8" />
     </div>
   );
 };
@@ -66,7 +66,7 @@ const FormComponent = ({
 }) => {
   const element = elementInstance as CustomInstance;
   const { height } = element.extraAttributes;
-  return <div style={{height,width:"100%"}} ></div>;
+  return <div style={{ height, width: "100%" }}></div>;
 };
 
 const PropertiesComponent = ({
@@ -110,13 +110,13 @@ const PropertiesComponent = ({
               <FormLabel>Height (px): {form.watch("height")}</FormLabel>
               <FormControl className="pt-2">
                 <Slider
-                defaultValue={[field.value]}
-                min={5}
-                max={200}
-                step={1}
-                onValueChange={(value) =>{
-                  field.onChange(value[0]);
-                }}
+                  defaultValue={[field.value]}
+                  min={5}
+                  max={200}
+                  step={1}
+                  onValueChange={(value) => {
+                    field.onChange(value[0]);
+                  }}
                 />
               </FormControl>
               <FormMessage />

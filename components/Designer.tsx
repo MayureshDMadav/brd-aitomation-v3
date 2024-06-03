@@ -56,7 +56,7 @@ const DesignerElementWrapper = ({
   if (draggable.isDragging) return null;
   // Element Dragging Functionality
   const DesignerElement = FormElements[element.type].designerComponent;
-  console.log("DesignerElement",DesignerElement)
+  console.log("DesignerElement", DesignerElement);
   return (
     <div
       ref={draggable.setNodeRef}
@@ -123,8 +123,13 @@ const DesignerElementWrapper = ({
 };
 
 const Designer = () => {
-  const { elements, addElement, selectedElement, setSelectedElement, removeElement } =
-    useDesigner();
+  const {
+    elements,
+    addElement,
+    selectedElement,
+    setSelectedElement,
+    removeElement,
+  } = useDesigner();
   const droppable = useDroppable({
     id: "designer-drop-area",
     data: {
@@ -151,17 +156,16 @@ const Designer = () => {
       }
 
       const isDroppingOverDesignerElementTop =
-      over.data?.current?.isTopHalftDesignerElement;
+        over.data?.current?.isTopHalftDesignerElement;
       const isDroppingOverDesignerElementBottom =
-      over.data?.current?.isBottomHalftDesignerElement;
+        over.data?.current?.isBottomHalftDesignerElement;
       const isDroppingOverDesignerElement =
-      isDroppingOverDesignerElementTop || isDroppingOverDesignerElementBottom;
+        isDroppingOverDesignerElementTop || isDroppingOverDesignerElementBottom;
       const droppingSideBarBtnOverDesignerElement =
-      isDesingerBtnElement && isDroppingOverDesignerElement;
+        isDesingerBtnElement && isDroppingOverDesignerElement;
 
-
-       // Second Scenario
-       if (droppingSideBarBtnOverDesignerElement) {
+      // Second Scenario
+      if (droppingSideBarBtnOverDesignerElement) {
         const type = active.data?.current?.type;
         const newElement = FormElements[type as ElementsType].construct(
           idGenerator()
@@ -185,29 +189,31 @@ const Designer = () => {
       }
 
       //Third Scenario
-      const isDraggingDesignerElement =  active.data?.current?.isDesignerElement;
-      const draggingDesingerElementOverAnotherDesignerElement = isDroppingOverDesignerElement && isDraggingDesignerElement;     
-      if(draggingDesingerElementOverAnotherDesignerElement){
+      const isDraggingDesignerElement = active.data?.current?.isDesignerElement;
+      const draggingDesingerElementOverAnotherDesignerElement =
+        isDroppingOverDesignerElement && isDraggingDesignerElement;
+      if (draggingDesingerElementOverAnotherDesignerElement) {
         const activeID = active.data?.current?.elementId;
         const overId = over.data?.current?.elementId;
 
-        const activeElemetnIndex = elements.findIndex((el) => el.id === activeID);
+        const activeElemetnIndex = elements.findIndex(
+          (el) => el.id === activeID
+        );
         const overElementIndex = elements.findIndex((el) => el.id === overId);
 
+        if (activeElemetnIndex === -1 && overElementIndex === -1) {
+          throw new Error("element not found");
+        }
 
-        if(activeElemetnIndex === -1 &&  overElementIndex === -1){
-          throw new Error("element not found")
-        } 
-        
-        const activeElement = {...elements[activeElemetnIndex]}
-        removeElement(activeID)
+        const activeElement = { ...elements[activeElemetnIndex] };
+        removeElement(activeID);
 
         let indexForNewElement = overElementIndex;
         if (isDroppingOverDesignerElementBottom) {
           indexForNewElement = overElementIndex + 1;
         }
 
-        addElement(indexForNewElement,activeElement);
+        addElement(indexForNewElement, activeElement);
       }
     },
   });
@@ -252,4 +258,3 @@ const Designer = () => {
 };
 
 export default Designer;
- 

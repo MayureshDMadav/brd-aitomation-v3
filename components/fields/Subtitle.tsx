@@ -65,7 +65,7 @@ const FormComponent = ({
 }) => {
   const element = elementInstance as CustomInstance;
   const { title } = element.extraAttributes;
-  return <p className="text-lg" >{title}</p>;
+  return <p className="text-lg">{title}</p>;
 };
 
 const PropertiesComponent = ({

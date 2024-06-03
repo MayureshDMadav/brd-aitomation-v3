@@ -68,9 +68,9 @@ export const FormElements: FormElementType = {
   Seprator: SeperatorFieldFormElement,
   Paragraph: PragraphFieldFormElement,
   SpacerField: SpacerFieldFormElement,
-  NumberField:NumberFieldFormElement,
-  TextAreaField:TextAreaFieldFormElement,
-  DateField:DateFieldFormElement,
-  SelectField:SelectFieldFormElement,
-  CheckBoxField:CheckBoxFieldFormElement
+  NumberField: NumberFieldFormElement,
+  TextAreaField: TextAreaFieldFormElement,
+  DateField: DateFieldFormElement,
+  SelectField: SelectFieldFormElement,
+  CheckBoxField: CheckBoxFieldFormElement,
 };
