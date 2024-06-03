@@ -42,6 +42,7 @@ const FormBuilder = ({form}:{form:Form}) => {
     if(isReady) return;
     const elements = JSON.parse(form.content);
     setElements(elements)
+    setSelectedElement(null)
     const readyTimeout = setTimeout(()=>setIsReady(true),500)
     return () => clearTimeout(readyTimeout)
   },[form,setElements,isReady,setSelectedElement])

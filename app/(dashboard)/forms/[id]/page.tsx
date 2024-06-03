@@ -19,6 +19,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatDistance } from "date-fns";
+import { Badge } from "@/components/ui/badge";
+import { format } from "date-fns";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type Row = { [key: string]: string } & {
   submittedAt: Date;
@@ -26,6 +29,17 @@ type Row = { [key: string]: string } & {
 
 const RowCell = ({ type, value }: { type: ElementsType; value: string }) => {
   let node: ReactNode = value;
+  switch (type) {
+    case "DateField":
+      if (!value) break;
+      const date = new Date(value);
+      node = <Badge variant={"outline"}>{format(date, "dd/MM/yyyy")}</Badge>;
+      break;
+    case "CheckBoxField":
+      const checked = value === "true";
+      node = <Checkbox checked={checked} disabled />;
+      break;
+  }
   return <TableCell>{node}</TableCell>;
 };
 
@@ -52,6 +66,12 @@ const SubmissonsTable = async ({ id }: { id: number }) => {
   formElements.forEach((element) => {
     switch (element.type) {
       case "TextField":
+      case "Seprator":
+      case "NumberField":
+      case "TextAreaField":
+      case "DateField":
+      case "SelectField":
+      case "CheckBoxField":
         columns.push({
           id: element.id,
           label: element.extraAttributes?.label,
