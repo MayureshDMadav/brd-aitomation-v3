@@ -22,6 +22,12 @@ import { formatDistance } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "../../../../components/ui/dialog";
 
 type Row = { [key: string]: string } & {
   submittedAt: Date;
@@ -54,9 +60,15 @@ const SubmissonsTable = async ({ id }: { id: number }) => {
     type: ElementsType;
   }[] = [];
 
+  const valueData: {
+    id: string;
+    label: string;
+  }[] = [];
+
   const rows: Row[] = [];
   form.FormSubmissions.forEach((submission) => {
     const content = JSON.parse(submission.content);
+
     rows.push({
       ...content,
       submittedAt: submission.createdAt,
@@ -66,12 +78,6 @@ const SubmissonsTable = async ({ id }: { id: number }) => {
   formElements.forEach((element) => {
     switch (element.type) {
       case "TextField":
-      case "Seprator":
-      case "NumberField":
-      case "TextAreaField":
-      case "DateField":
-      case "SelectField":
-      case "CheckBoxField":
         columns.push({
           id: element.id,
           label: element.extraAttributes?.label,
@@ -82,22 +88,66 @@ const SubmissonsTable = async ({ id }: { id: number }) => {
       default:
         break;
     }
+
+    if (element) {
+      valueData.push({
+        id: element.id,
+        label: element.extraAttributes?.label,
+      });
+    }
   });
+
+  interface LabelItem {
+    id: string;
+    label: string;
+  }
+
+  const FormData = ({
+    row,
+    value,
+  }: {
+    row: Row | null;
+    value: LabelItem[];
+  }) => {
+    if (!row) {
+      return null; // Return null if row is null or undefined
+    }
+
+    const rowData = Object.entries(row).filter(
+      ([key]) => key !== "submittedAt"
+    );
+    const valueDataMap = new Map(value.map((item) => [item.id, item.label]));
+
+    return (
+      <>
+        <div className="grid justify-center mt-20 w-screen">
+          {rowData.map(([key, value]) => (
+            <div key={key} className="grid border gap-x-10 gap-y-8 grid-cols-3">
+              <div className="p-8">{valueDataMap.get(key)}</div>
+              <div className="p-8 w-auto text-center">:</div>
+              <div className="p-8 mr-auto">
+                {typeof value === "string" ? value : value?.toString()}
+              </div>
+            </div>
+          ))}
+        </div>
+      </>
+    );
+  };
+
   return (
     <>
-      <h1 className="text-2xl font-bold my-4"> Submissions</h1>
-      <div className="rounded-md border">
+      <h1 className="text-2xl font-bold my-4 ml-20 mt-30"> Submissions</h1>
+      <div className="rounded-md border w-200 ml-20 mr-20">
         <Table>
           <TableHeader>
             <TableRow>
-              {" "}
-              {columns.map((column) => (
-                <TableHead key={column.id} className="uppercase">
-                  {column.label}
-                </TableHead>
-              ))}
-              <TableHead className="text-muted-foreground text-right uppercase">
+              <TableHead className="uppercase">Merchant Name</TableHead>
+              <TableHead className="text-muted-foreground  text-center  uppercase">
                 Submitted at
+              </TableHead>
+              <TableHead className="text-muted-foreground text-right uppercase">
+                View Data
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -111,10 +161,20 @@ const SubmissonsTable = async ({ id }: { id: number }) => {
                     value={row[column.id]}
                   />
                 ))}
-                <TableCell className="text-muted-foreground text-right">
+                <TableCell className="text-muted-foreground text-center">
                   {formatDistance(row.submittedAt, new Date(), {
                     addSuffix: true,
                   })}
+                </TableCell>
+                <TableCell className="text-muted-foreground  text-right">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant={"outline"}>View Form</Button>
+                    </DialogTrigger>
+                    <DialogContent className="w-screen h-screen max-h-screen max-w-full flex flex-col flex-grow p-0 gap-0">
+                      {row && <FormData row={row} value={valueData} />}
+                    </DialogContent>
+                  </Dialog>
                 </TableCell>
               </TableRow>
             ))}

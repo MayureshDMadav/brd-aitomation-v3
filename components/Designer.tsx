@@ -219,7 +219,7 @@ const Designer = () => {
   });
 
   return (
-    <div className="flex w-full h-full">
+    <div className="flex w-full h-auto mt-auto">
       <DesignerSideBar />
       <div
         className="p-4 w-full"
@@ -230,7 +230,7 @@ const Designer = () => {
         <div
           ref={droppable.setNodeRef}
           className={cn(
-            "bg-background max-w-[920px] h-full m-auto rounded-xl flex flex-col flex-grow items-center justify-start flex-1 over-y-auto",
+            "bg-background max-w-[920px] h-auto m-auto rounded-xl flex flex-col flex-grow items-center justify-start flex-1 over-y-auto",
             droppable.isOver && "ring-4 ring-primary ring-inset"
           )}
         >
