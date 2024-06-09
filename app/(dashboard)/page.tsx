@@ -163,7 +163,17 @@ const StatsCards = (props: StatsCardProps) => {
   );
 };
 
-export default function Home() {
+export default  async function Home() {
+  const formData = await GetForms();
+
+  let count = 0;
+  let array=[]
+
+  for(let i=0;i<formData.length;i++){
+      array.push(count);
+      count = count + 1;
+  } 
+
   return (
     <div className="container pt-4">
       <Suspense fallback={<StatsCards loading={true} />}>
@@ -175,7 +185,7 @@ export default function Home() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <CreateFormBtn />
         <Suspense
-          fallback={[1, 2, 3].map((el) => (
+          fallback={array.map((el) => (
             <FormCardSkeleton key={el} />
           ))}
         >

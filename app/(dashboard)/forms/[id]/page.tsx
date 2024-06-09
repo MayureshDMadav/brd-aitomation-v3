@@ -28,6 +28,8 @@ import {
   DialogContent,
   DialogTrigger,
 } from "../../../../components/ui/dialog";
+import Head  from "next/head";
+
 
 type Row = { [key: string]: string } & {
   submittedAt: Date;
@@ -76,8 +78,9 @@ const SubmissonsTable = async ({ id }: { id: number }) => {
   });
 
   formElements.forEach((element) => {
-    switch (element.type) {
-      case "TextField":
+    const elementLabel = element.extraAttributes?.label?.toLowerCase().trim()
+    switch (elementLabel) {
+      case "merchant name":
         columns.push({
           id: element.id,
           label: element.extraAttributes?.label,
@@ -116,19 +119,29 @@ const SubmissonsTable = async ({ id }: { id: number }) => {
     const rowData = Object.entries(row).filter(
       ([key]) => key !== "submittedAt"
     );
-    const valueDataMap = new Map(value.map((item) => [item.id, item.label]));
 
+
+    const valueDataMap = new Map(value.sort().map((item) => [item.id, item.label]));
+
+
+
+    
     return (
       <>
+        {rowData.map(([key,value])=>(
+          <span className="mt-10 text-left mb-[-2rem] flex justify-center" key={key}> {valueDataMap && valueDataMap.get(key)?.toLowerCase().trim() === "merchant name" && value.toString() != null ? "Merchant Name: " + value.toString() :""} </span>
+        ))}
         <div className="grid justify-center mt-20 w-screen">
-          {rowData.map(([key, value]) => (
-            <div key={key} className="grid border gap-x-10 gap-y-8 grid-cols-3">
+          {rowData.map(([key, value]) => (            
+            <span key={key}>
+            <div className="grid border gap-x-10 gap-y-8 grid-cols-3">
               <div className="p-8">{valueDataMap.get(key)}</div>
               <div className="p-8 w-auto text-center">:</div>
-              <div className="p-8 mr-auto">
+              <div className="p-8 ml-[-9rem]">
                 {typeof value === "string" ? value : value?.toString()}
               </div>
             </div>
+            </span>
           ))}
         </div>
       </>
@@ -137,7 +150,7 @@ const SubmissonsTable = async ({ id }: { id: number }) => {
 
   return (
     <>
-      <h1 className="text-2xl font-bold my-4 ml-20 mt-30"> Submissions</h1>
+      <h1 className="text-2xl font-bold my-4 ml-20 mt-[50px]"> Submissions</h1>
       <div className="rounded-md border w-200 ml-20 mr-20">
         <Table>
           <TableHeader>
