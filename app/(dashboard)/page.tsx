@@ -53,7 +53,7 @@ const FormCard = ({ form }: { form: Form }) => {
       <CardContent className="h-[20px] truncate text-sm text-muted-foreground">
         {form.description || "No Description"}
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex flex-row gap-5">
         {form.published && (
           <Button asChild className="w-full mt-2 text-md gap-4">
             <Link href={`/forms/${form.id}`}>
@@ -61,7 +61,7 @@ const FormCard = ({ form }: { form: Form }) => {
             </Link>
           </Button>
         )}
-        {!form.published && (
+        {(
           <Button asChild className="w-full mt-2 text-md gap-4">
             <Link href={`/builder/${form.id}`}>
               Edit Form <FaEdit />

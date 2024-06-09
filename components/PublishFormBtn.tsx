@@ -16,8 +16,9 @@ import { FaIcons, FaSpinner } from "react-icons/fa";
 import { toast } from "./ui/use-toast";
 import { PublishForm } from "@/actions/form";
 import { useRouter } from "next/navigation";
+import Confetti from "../app/confetti/page";
 
-const PublishFormBtn = ({ id }: { id: number }) => {
+const PublishFormBtn = ({ id ,sharedUrl }: { id: number ,sharedUrl:string }) => {
   const [loading, startTransition] = useTransition();
   const router = useRouter();
 
@@ -28,7 +29,8 @@ const PublishFormBtn = ({ id }: { id: number }) => {
         title: "Success",
         description: "Your Form Is Published",
       });
-      router.refresh();
+      
+      router.push(`/confetti?id=${id}&sharedUrl=${sharedUrl}`);
     } catch (e) {
       toast({
         title: "Error",
@@ -38,6 +40,7 @@ const PublishFormBtn = ({ id }: { id: number }) => {
   };
 
   return (
+    <>
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
@@ -76,6 +79,7 @@ const PublishFormBtn = ({ id }: { id: number }) => {
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
+    </>
   );
 };
 
