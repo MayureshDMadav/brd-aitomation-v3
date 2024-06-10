@@ -66,7 +66,7 @@ const FormBuilder = ({ form }: { form: Form }) => {
           </h2>
           <div className="flex items-center gap-2">
             <PreviewDialogBtn />
-            {form.published && (
+            {!form.published && (
               <>
                 <SaveFormBtn id={form.id} />
                 <PublishFormBtn id={form.id} sharedUrl={shareUrl} />
