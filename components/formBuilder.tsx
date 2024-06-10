@@ -16,12 +16,7 @@ import {
 import DragOverlayWrapper from "./DragOverlayWrapper";
 import useDesigner from "./hooks/useDesigner";
 import Loading from "@/app/(dashboard)/builder/[id]/loading";
-import Confetti from "react-confetti";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { toast } from "./ui/use-toast";
-import Link from "next/link";
-import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+
 
 // Responsible for Builder and publishing Form Pages
 const FormBuilder = ({ form }: { form: Form }) => {

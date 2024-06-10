@@ -2,7 +2,15 @@
   @tailwind components;
   @tailwind utilities;
 
- 
+
+/* Handling Printing functionality */
+@media print{
+  #print_button{
+    display: none;
+  }
+}
+
+
   /* Change Base Background UI from shadcn  url: https://ui.shadcn.com/themes */
 @layer base {
   :root {

@@ -28,8 +28,9 @@ import {
   DialogContent,
   DialogTrigger,
 } from "../../../../components/ui/dialog";
-import Head  from "next/head";
-
+import Head from "next/head";
+import { MdPrint } from "react-icons/md";
+import PrintPdfButton from "@/components/pdf/printPdf";
 
 type Row = { [key: string]: string } & {
   submittedAt: Date;
@@ -78,7 +79,7 @@ const SubmissonsTable = async ({ id }: { id: number }) => {
   });
 
   formElements.forEach((element) => {
-    const elementLabel = element.extraAttributes?.label?.toLowerCase().trim()
+    const elementLabel = element.extraAttributes?.label?.toLowerCase().trim();
     switch (elementLabel) {
       case "merchant name":
         columns.push({
@@ -113,34 +114,45 @@ const SubmissonsTable = async ({ id }: { id: number }) => {
     value: LabelItem[];
   }) => {
     if (!row) {
-      return null; // Return null if row is null or undefined
+      return null;
     }
 
     const rowData = Object.entries(row).filter(
       ([key]) => key !== "submittedAt"
     );
 
+    const valueDataMap = new Map(
+      value.sort().map((item) => [item.id, item.label])
+    );
 
-    const valueDataMap = new Map(value.sort().map((item) => [item.id, item.label]));
-
-
-
-    
     return (
       <>
-        {rowData.map(([key,value])=>(
-          <span className="mt-10 text-left mb-[-2rem] flex justify-center" key={key}> {valueDataMap && valueDataMap.get(key)?.toLowerCase().trim() === "merchant name" && value.toString() != null ? "Merchant Name: " + value.toString() :""} </span>
+        <span className="flex ml-auto mt-[2rem] mb-[-5rem] mr-[10rem] align-right">
+          <PrintPdfButton/>
+        </span>
+        {rowData.map(([key, value]) => (
+          <span
+            className="mt-10 text-left mb-[-2rem] flex justify-center"
+            key={key}
+          >
+            {" "}
+            {valueDataMap &&
+            valueDataMap.get(key)?.toLowerCase().trim() === "merchant name" &&
+            value.toString() != null
+              ? "Merchant Name: " + value.toString()
+              : ""}{" "}
+          </span>
         ))}
         <div className="grid justify-center mt-20 w-screen">
-          {rowData.map(([key, value]) => (            
+          {rowData.map(([key, value]) => (
             <span key={key}>
-            <div className="grid border gap-x-10 gap-y-8 grid-cols-3">
-              <div className="p-8">{valueDataMap.get(key)}</div>
-              <div className="p-8 w-auto text-center">:</div>
-              <div className="p-8 ml-[-9rem]">
-                {typeof value === "string" ? value : value?.toString()}
+              <div className="grid border gap-x-10 gap-y-8 grid-cols-3">
+                <div className="p-8">{valueDataMap.get(key)}</div>
+                <div className="p-8 w-auto text-center">:</div>
+                <div className="p-8 ml-[-9rem]">
+                  {typeof value === "string" ? value : value?.toString()}
+                </div>
               </div>
-            </div>
             </span>
           ))}
         </div>
