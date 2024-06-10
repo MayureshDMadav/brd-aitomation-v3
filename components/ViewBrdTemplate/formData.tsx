@@ -1,8 +1,5 @@
 "use client";
 
-import PrintPdfButton from "@/components/pdf/printPdf";
-import jspdf from "jspdf";
-import { useRef } from "react";
 import { Button } from "../ui/button";
 import { MdPrint } from "react-icons/md";
 
@@ -19,7 +16,6 @@ const FormData = ({ row, value }: { row: Row | null; value: LabelItem[] }) => {
   if (!row) {
     return null;
   }
-  const pdfref = useRef<HTMLElement | null>(null);
   const rowData = Object.entries(row).filter(([key]) => key !== "submittedAt");
 
   const valueDataMap = new Map(
@@ -45,7 +41,6 @@ const FormData = ({ row, value }: { row: Row | null; value: LabelItem[] }) => {
       </span>
       {rowData.map(([key, value]) => (
         <span
-          ref={pdfref}
           className="mt-8 text-left mb-[-2rem] flex justify-center"
           key={key}
         >
