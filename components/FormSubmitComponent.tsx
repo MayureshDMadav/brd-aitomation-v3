@@ -97,7 +97,7 @@ const FormSubmitComponent = ({
 
   return (
     <div className="flex justify-start flex-col w-full items-center p-8">
-      <div className="w-full mb-5 w-[600px] relative">
+      <div className="mb-5 w-[600px] relative">
         <div className="absolute top-0 left-0 w-full bg-gray-200 h-4 rounded-full">
           <div
             className="absolute top-0 left-0 bg-blue-500 h-4 rounded-full"

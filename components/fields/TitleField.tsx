@@ -50,7 +50,7 @@ const DesignerComponent = ({
   const { title } = element.extraAttributes;
   return (
     <div className="flex flex-col gap-2 w-full">
-      <Label className="text-muted-foreground">Text Field</Label>
+      <Label className="text-muted-foreground">Title Field</Label>
       <p className="text-xl">{title}</p>
     </div>
   );

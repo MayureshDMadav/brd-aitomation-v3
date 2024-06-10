@@ -7,6 +7,7 @@ import { MdPrint } from 'react-icons/md'
 const PrintCurrentTab = () => {
 
   const handlePrintCurrentTab = () => {
+    console.log(document.querySelector("#download_pdf"))
     window.print()
   }
 

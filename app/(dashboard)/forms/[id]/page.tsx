@@ -127,12 +127,9 @@ const SubmissonsTable = async ({ id }: { id: number }) => {
 
     return (
       <>
-        <span className="flex ml-auto mt-[2rem] mb-[-5rem] mr-[10rem] align-right">
-          <PrintPdfButton/>
-        </span>
         {rowData.map(([key, value]) => (
           <span
-            className="mt-10 text-left mb-[-2rem] flex justify-center"
+            className="mt-8 text-left mb-[-2rem] flex justify-center"
             key={key}
           >
             {" "}
@@ -143,13 +140,13 @@ const SubmissonsTable = async ({ id }: { id: number }) => {
               : ""}{" "}
           </span>
         ))}
-        <div className="grid justify-center mt-20 w-screen">
+        <div className="grid justify-center mt-10 w-screen" id="download_pdf">
           {rowData.map(([key, value]) => (
             <span key={key}>
-              <div className="grid border gap-x-10 gap-y-8 grid-cols-3">
-                <div className="p-8">{valueDataMap.get(key)}</div>
-                <div className="p-8 w-auto text-center">:</div>
-                <div className="p-8 ml-[-9rem]">
+              <div className="grid border gap-x-10 gap-y-0 grid-cols-3">
+                <div className="p-2">{valueDataMap.get(key)}</div>
+                <div className="p-2 w-auto text-center">:</div>
+                <div className="p-2 ml-[-9rem]">
                   {typeof value === "string" ? value : value?.toString()}
                 </div>
               </div>
@@ -196,7 +193,10 @@ const SubmissonsTable = async ({ id }: { id: number }) => {
                     <DialogTrigger asChild>
                       <Button variant={"outline"}>View Form</Button>
                     </DialogTrigger>
-                    <DialogContent className="w-screen h-screen max-h-screen max-w-full flex flex-col flex-grow p-0 gap-0">
+                    <DialogContent className="w-full h-screen max-h-full max-w-full flex flex-col flex-grow p-0 gap-0">
+                      <span className="block ml-auto">
+                        <PrintPdfButton />
+                      </span>
                       {row && <FormData row={row} value={valueData} />}
                     </DialogContent>
                   </Dialog>

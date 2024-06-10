@@ -20,13 +20,13 @@ const Confettis = () => {
       }  
   }, [loading]);
 
-  if (!loading) {
-    return (
-      <div className="mt-[25rem]">
-        <Loading />
-      </div>
-    );
-  }
+  // if (!loading) {
+  //   return (
+  //     <div className="mt-[25rem]">
+  //       <Loading />
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
