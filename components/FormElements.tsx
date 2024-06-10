@@ -2,6 +2,7 @@ import { CheckBoxFieldFormElement } from "./fields/CheckBox";
 import { DateFieldFormElement } from "./fields/DateField";
 import { NumberFieldFormElement } from "./fields/NumberField";
 import { PragraphFieldFormElement } from "./fields/Paragraph";
+import { RadioFieldFormElement } from "./fields/RadioBtn";
 import { SelectFieldFormElement } from "./fields/SelectField";
 import { SeperatorFieldFormElement } from "./fields/Seperator";
 import { SpacerFieldFormElement } from "./fields/SpacerField";
@@ -21,7 +22,8 @@ export type ElementsType =
   | "TextAreaField"
   | "DateField"
   | "SelectField"
-  | "CheckBoxField";
+  | "CheckBoxField"
+  | "RadioButton";
 
 export type SubmitFunction = (key: string, value: string) => void;
 
@@ -73,4 +75,5 @@ export const FormElements: FormElementType = {
   DateField: DateFieldFormElement,
   SelectField: SelectFieldFormElement,
   CheckBoxField: CheckBoxFieldFormElement,
+  RadioButton:RadioFieldFormElement
 };

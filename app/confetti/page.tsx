@@ -10,13 +10,14 @@ import Loading from "./loading";
 
 const Confettis = () => {
   const [loading, setLoading] = useState(false);
-  let searchParams = new URLSearchParams(window.location.search);
+  let searchParams = new URLSearchParams(window?.location?.search);
   let sharedUrl = searchParams.get("sharedUrl");
   let id = searchParams.get("id");
   useEffect(() => {
-    if (sharedUrl && id) {
-      setLoading(true);
-    }
+      if (sharedUrl && id) {
+        console.log("set Value true")
+        setLoading(true);
+      }  
   }, [loading]);
 
   if (!loading) {

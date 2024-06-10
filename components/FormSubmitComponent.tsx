@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useCallback, useRef, useState, useTransition } from "react";
 import { FormElementInstance, FormElements } from "./FormElements";
 import { Button } from "./ui/button";
@@ -17,12 +16,29 @@ const FormSubmitComponent = ({
 }) => {
   const formValues = useRef<{ [key: string]: string }>({});
   const formErrors = useRef<{ [key: string]: boolean }>({});
+  const [currentPage, setCurrentPage] = useState(0);
   const [renderKey, setRenderkey] = useState(new Date().getTime());
   const [sumitted, setSubmitted] = useState(false);
   const [pending, startTransition] = useTransition();
 
+  const pages: FormElementInstance[][] = [];
+  let currentPageContent: FormElementInstance[] = [];
+
+  content.forEach((element) => {
+    if (element.type === "Seprator") {
+      pages.push(currentPageContent);
+      currentPageContent = [];
+    } else {
+      currentPageContent.push(element);
+    }
+  });
+
+  if (currentPageContent.length > 0) {
+    pages.push(currentPageContent);
+  }
+
   const validateForm: () => boolean = useCallback(() => {
-    for (const field of content) {
+    for (const field of pages[currentPage]) {
       const actualValue = formValues.current[field.id] || "";
       const valid = FormElements[field.type].validate(field, actualValue);
       if (!valid) {
@@ -33,7 +49,7 @@ const FormSubmitComponent = ({
       return false;
     }
     return true;
-  }, [content]);
+  }, [pages, currentPage]);
 
   const submitValue = useCallback((key: string, value: string) => {
     formValues.current[key] = value;
@@ -62,8 +78,9 @@ const FormSubmitComponent = ({
         variant: "destructive",
       });
     }
-    console.log("Form Values", formValues.current);
   };
+
+  const progress = ((currentPage + 1) / pages.length) * 100;
 
   if (sumitted) {
     return (
@@ -79,12 +96,25 @@ const FormSubmitComponent = ({
   }
 
   return (
-    <div className="flex justify-center w-full h-full items-center p-8">
+    <div className="flex justify-start flex-col w-full items-center p-8">
+      <div className="w-full mb-5 w-[600px] relative">
+        <div className="absolute top-0 left-0 w-full bg-gray-200 h-4 rounded-full">
+          <div
+            className="absolute top-0 left-0 bg-blue-500 h-4 rounded-full"
+            style={{ width: `${progress}%` }}
+          ></div>
+        </div>
+        <div className="flex justify-between mt-1 mt-[1rem] text-sm text-white-500">
+          <span>0%</span>
+          <span>{progress.toFixed(0)}%</span>
+          <span>100%</span>
+        </div>
+      </div>
       <div
         key={renderKey}
-        className="max-w-[620px] flex flex-col gap-4 flex-grow bg-background w-full p-8 overflow-y-auto border shadow-xl shadow-blu-700 rounded"
+        className="max-w-[620px] flex flex-col gap-4 bg-background w-full p-8 overflow-y-auto border shadow-xl shadow-blu-700 rounded"
       >
-        {content.map((element) => {
+        {pages[currentPage].map((element) => {
           const FormElement = FormElements[element.type].formComponent;
           return (
             <FormElement
@@ -96,21 +126,36 @@ const FormSubmitComponent = ({
             />
           );
         })}
-        <Button
-          className="mt-8"
-          onClick={() => {
-            startTransition(submitForm);
-          }}
-          disabled={pending}
-        >
-          {!pending && (
-            <>
-              Submit
-              <HiCursorClick className="ml-2" />
-            </>
+        <div className="flex justify-between">
+          {currentPage !== 0 && (
+            <Button className="w-[200px]" onClick={() => setCurrentPage((prevPage) => prevPage - 1)}>
+              Previous
+            </Button>
           )}
-          {pending && <ImSpinner2 className="animate-spine" />}
-        </Button>
+          {currentPage !== pages.length - 1 && (
+            <Button  className="w-[200px]" onClick={() => setCurrentPage((prevPage) => prevPage + 1)}>
+              Next
+            </Button>
+          )}
+          {currentPage === pages.length - 1 && (
+            <Button
+            className="w-[200px]"
+              onClick={() => {
+                startTransition(submitForm);
+              }}
+              disabled={pending}
+            >
+              {!pending ? (
+                <>
+                  Submit
+                  <HiCursorClick className="ml-2" />
+                </>
+              ) : (
+                <ImSpinner2 className="animate-spin" />
+              )}
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );
